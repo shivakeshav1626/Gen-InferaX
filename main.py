@@ -7,7 +7,7 @@ def dynamic_prompt(question, expertise="beginner", answer_type="summary"):
     prompt = (
         f"User expertise: {expertise}\n"
         f"Preferred answer type: {answer_type}\n"
-        f"Please answer the following research question accordingly:\n{question}"
+        f"Please answer the following research question accordingly. Respond in JSON format with keys 'answer', 'sources', and 'confidence':\n{question}"
     )
     headers = {
         "Content-Type": "application/json"
@@ -40,7 +40,16 @@ def dynamic_prompt(question, expertise="beginner", answer_type="summary"):
         print(f"Tokens used in this AI call: {token_count}")
     else:
         print("Token usage information not available from Gemini API response.")
-    return result['candidates'][0]['content']['parts'][0]['text']
+    # Try to parse structured output
+    response_text = result['candidates'][0]['content']['parts'][0]['text']
+    import json
+    try:
+        structured = json.loads(response_text)
+        print("Structured Output:", structured)
+        return structured
+    except Exception:
+        print("Raw Output (not valid JSON):", response_text)
+        return response_text
 
 # Example usage
 question = "What are the key differences between FAISS and Pinecone vector databases?"
