@@ -18,7 +18,8 @@ def dynamic_prompt(question, expertise="beginner", answer_type="summary"):
         ],
         "generationConfig": {
             "topP": 0.8,  # Top P sampling for diversity
-            "temperature": 0.7  # Temperature for creativity
+            "temperature": 0.7,  # Temperature for creativity
+            "topK": 40  # Top K sampling for diversity
         }
     }
     response = requests.post(
