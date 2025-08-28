@@ -23,6 +23,18 @@ def dynamic_prompt(question, expertise="beginner", answer_type="summary"):
         json=data
     )
     result = response.json()
+    # Token usage logging
+    token_count = None
+    # Gemini API returns token usage in 'usageMetadata' if enabled
+    if 'usageMetadata' in result:
+        token_count = result['usageMetadata'].get('totalTokens')
+    elif 'candidates' in result and 'usageMetadata' in result['candidates'][0]:
+        token_count = result['candidates'][0]['usageMetadata'].get('totalTokens')
+    # Print token usage
+    if token_count is not None:
+        print(f"Tokens used in this AI call: {token_count}")
+    else:
+        print("Token usage information not available from Gemini API response.")
     return result['candidates'][0]['content']['parts'][0]['text']
 
 # Example usage
