@@ -15,7 +15,10 @@ def dynamic_prompt(question, expertise="beginner", answer_type="summary"):
     data = {
         "contents": [
             {"parts": [{"text": prompt}]}
-        ]
+        ],
+        "generationConfig": {
+            "topP": 0.8  # Top P sampling for diversity
+        }
     }
     response = requests.post(
         f"{GEMINI_API_URL}?key={GEMINI_API_KEY}",
