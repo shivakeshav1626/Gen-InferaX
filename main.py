@@ -1,10 +1,14 @@
 import requests
 
-GEMINI_API_KEY = "AIzaSyAys17efuQBG7x_wtMzUIKqx51oLf2he6k"
+GEMINI_API_KEY = "YOUR_GEMINI_API_KEY"
 GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent"
 
-def zero_shot_prompt(question):
-    prompt = f"Answer the following research question in a clear, structured way:\n{question}"
+def dynamic_prompt(question, expertise="beginner", answer_type="summary"):
+    prompt = (
+        f"User expertise: {expertise}\n"
+        f"Preferred answer type: {answer_type}\n"
+        f"Please answer the following research question accordingly:\n{question}"
+    )
     headers = {
         "Content-Type": "application/json"
     }
@@ -23,5 +27,5 @@ def zero_shot_prompt(question):
 
 # Example usage
 question = "What are the key differences between FAISS and Pinecone vector databases?"
-answer = zero_shot_prompt(question)
+answer = dynamic_prompt(question, expertise="expert", answer_type="detailed")
 print("Gemini LLM Answer:", answer)
